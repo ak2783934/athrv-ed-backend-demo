@@ -23,7 +23,7 @@ router.post("/registration", async (req, res) => {
       "INSERT INTO registrations (name,age,phone,email,college,eventno) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
       [name, age, phone, email, college, eventno]
     );
-    res.json("result.rows[0]");
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
   }
