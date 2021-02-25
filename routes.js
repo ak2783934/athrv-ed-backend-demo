@@ -19,7 +19,7 @@ router.post("/registration", async (req, res) => {
     const { name, age, phone, email, college, eventno } = req.body;
     const client = await pool.connect();
     const result = await client.query(
-      "INSERT INTO resigtrations (name,age,phone,email,college,eventno) VALUES $1 $2 $3 $4 $5 $6 RETURNING *",
+      "INSERT INTO resigtrations (name,age,phone,email,college,eventno) VALUES ($1 $2 $3 $4 $5 $6) RETURNING *",
       [name, age, phone, email, college, eventno]
     );
     res.json(result.rows[0]);
