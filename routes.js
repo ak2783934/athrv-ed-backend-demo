@@ -81,10 +81,9 @@ router.post("/signin", async (req, res) => {
     const newpassword = await bcrypt.hash(password, salt);
     console.log(newpassword);
     const client = await pool.connect();
-    const result = await client.query(
-      "SELECT * FROM users WHERE email=$1 AND password=$2",
-      [email, password]
-    );
+    const result = await client.query("SELECT * FROM users WHERE email=$1", [
+      email,
+    ]);
     console.log(result);
     res.json("TRYING SIGNIN");
   } catch (err) {
