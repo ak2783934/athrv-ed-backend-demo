@@ -16,13 +16,13 @@ const pool = new Pool({
     rejectUnauthorized: false,
   },
 });
-const client = pool.connect();
 
 //running the express app here
 app.get("/", async (req, res) => {
   try {
+    const client = await pool.connect();
     const result = await client.query("SELECT * FROM users");
-    res.send(JSON.stringify("NULL"));
+    res.send(JSON.stringify("This worked mfs"));
   } catch (err) {
     console.log(err);
   }
