@@ -141,7 +141,7 @@ router.get("/events", async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM event");
-    res.json(result.rows[0]);
+    res.json(result.rows);
   } catch (err) {
     console.error(err);
   }
