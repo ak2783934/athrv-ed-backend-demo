@@ -30,6 +30,22 @@ router.post("/registration", async (req, res) => {
 });
 
 //! posting a new event {auth required here}
+//? FIRST WE WILL MAKE IT NOT AUTH REQUIRED
+router.post("/postevent", async (req, res) => {
+  try {
+    const { name } = req.body;
+    console.log(name);
+    const client = await pool.connect();
+    const result = await client.query(
+      "INSERT INTO event (name) VALUES $1 RETURNING *",
+      [name]
+    );
+    res.json(result.row[0]);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 //! signup
 //! signin
 
