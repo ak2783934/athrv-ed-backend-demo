@@ -73,6 +73,25 @@ router.post("/signup", async (req, res) => {
 
 //! signin
 
+router.post("/signin", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log(email, password);
+    const salt = await bcrypt.genSalt(10);
+    const newpassword = await bcrypt.hash(password, salt);
+    console.log(newpassword);
+    const client = await pool.connect();
+    const result = await client.query(
+      "SELECT * FROM users WHERE email=$1 AND password=$2",
+      [email, password]
+    );
+    console.log(result);
+    res.json("TRYING SIGNIN");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 //?delete routes
 //! nowhere use at all
 
