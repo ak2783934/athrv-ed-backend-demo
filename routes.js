@@ -148,6 +148,19 @@ router.get("/events", async (req, res) => {
 });
 
 //! 2) get all the persons list registered at certain event {auth required and eventid}
+router.get("/getlist", async (req, res) => {
+  try {
+    const { eventno } = req.body;
+    const client = await pool.connect();
+    const result = await client.query(
+      "SELECT * FROM registrations WHERE eventno=$1",
+      [eventno]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 //try route
 
