@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 
 //postgres connection is here
 const { Pool } = require("pg");
@@ -15,7 +15,7 @@ const client = pool.connect();
 
 app.get("/", async (req, res) => {
   try {
-    const result = await client.query("SELECT * FROM test_table");
+    const result = await client.query("SELECT * FROM users");
     res.send(JSON.stringify(result));
   } catch (err) {
     console.error(err);
