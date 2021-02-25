@@ -19,8 +19,7 @@ app.get("/", async (req, res) => {
     const result = await client.query("SELECT * FROM users");
     res.send(JSON.stringify("NULL"));
   } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
+    console.log(err);
   }
 });
 
