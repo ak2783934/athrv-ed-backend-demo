@@ -18,7 +18,7 @@ app.use(express.json());
 // });
 
 //running the express app here
-app.get("/", routes);
+app.use("/", routes);
 // app.get("/", async (req, res) => {
 //   try {
 //     const client = await pool.connect();
