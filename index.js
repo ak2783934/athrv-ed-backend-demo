@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 5000;
-import routes from "./routes";
+const routes = require("./routes");
 //middlewares
 app.use(cors());
 app.use(express.json());
