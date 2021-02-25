@@ -95,9 +95,9 @@ router.post("/signin", async (req, res) => {
       ) {
         if (err) return console.error(err);
         if (isMatch === true) {
-          const token = jwt.sign({ _id: user._id }, process.env.secret);
-          res.cookie("tkn", token, { expire: new Date() + 9999 });
           const { name, email, uid } = result.rows[0];
+          const token = jwt.sign({ uid }, process.env.secret);
+          res.cookie("tkn", token, { expire: new Date() + 9999 });
           res.json({ token, user: { name, email, uid } });
         } else {
           res.json("Email and password didn't match");
