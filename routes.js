@@ -113,14 +113,19 @@ router.post("/signin", async (req, res) => {
 //! only to change the state of the event from active to inactive {auth is required here }
 router.put("/eventedit", async (req, res) => {
   try {
-    const { name, isactive } = req.body;
-    console.log(name, isactive);
-    // const client = await pool.connect();
-    // const result = await client.query(
-    //     "INSERT INTO event (name) VALUES ($1) RETURNING *",
-    //     [name]
-    //   );
-    res.json("editing event here");
+    const { name, isactive, eid } = req.body;
+    console.log(name, isactive, eid);
+    if (isactive === true) {
+      isactive = false;
+    } else {
+      isactive = true;
+    }
+    const client = await pool.connect();
+    const result = await client.query(
+      "UPDATE event SET isactive =$1 WHERE eid =$2 RETURNING *",
+      [isactive, eid]
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
   }
