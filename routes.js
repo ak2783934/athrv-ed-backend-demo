@@ -94,7 +94,7 @@ router.post("/signin", async (req, res) => {
         isMatch
       ) {
         if (err) return console.error(err);
-        if (isMatch === "true") {
+        if (isMatch === true) {
           const token = jwt.sign({ _id: user._id }, process.env.secret);
           res.cookie("tkn", token, { expire: new Date() + 9999 });
           const { name, email, uid } = result.rows[0];
