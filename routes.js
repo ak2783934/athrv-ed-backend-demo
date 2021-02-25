@@ -109,18 +109,28 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-//?delete routes
-//! nowhere use at all
-
 //?put routes
 //! only to change the state of the event from active to inactive {auth is required here }
+router.put("/eventedit", async (req, res) => {
+  try {
+    const { name, isactive } = req.body;
+    console.log(name, isactive);
+    // const client = await pool.connect();
+    // const result = await client.query(
+    //     "INSERT INTO event (name) VALUES ($1) RETURNING *",
+    //     [name]
+    //   );
+    res.json("editing event here");
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 //list all the routes you are going to work on!!
 //? get routes
 //! 1) getall the events {no auth required} //will be used both inside and outside
 
 //! 2) get all the persons list registered at certain event {auth required}
-//! 3)
 
 //try route
 
