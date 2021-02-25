@@ -17,12 +17,13 @@ const pool = new Pool({
 router.post("/registration", async (req, res) => {
   try {
     const { name, age, phone, email, college, eventno } = req.body;
+    console.log(name, age, phone, email, college, eventno);
     const client = await pool.connect();
     const result = await client.query(
       "INSERT INTO resigtrations (name,age,phone,email,college,eventno) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
       [name, age, phone, email, college, eventno]
     );
-    res.json(result.rows[0]);
+    res.json("result.rows[0]");
   } catch (err) {
     console.error(err);
   }
