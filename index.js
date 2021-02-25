@@ -8,14 +8,14 @@ app.use(cors());
 app.use(express.json());
 
 //postgres connection is here
-const { Pool } = require("pg");
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
+// const { Pool } = require("pg");
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: true,
+//   tls: {
+//     rejectUnauthorized: false,
+//   },
+// });
 
 //running the express app here
 app.get("/", routes);
