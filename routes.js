@@ -37,7 +37,7 @@ router.post("/postevent", async (req, res) => {
     console.log(name);
     const client = await pool.connect();
     const result = await client.query(
-      "INSERT INTO event (name) VALUES $1 RETURNING *",
+      "INSERT INTO event (name) VALUES ($1) RETURNING *",
       [name]
     );
     res.json(result.row[0]);
