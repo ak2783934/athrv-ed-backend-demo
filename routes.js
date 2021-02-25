@@ -54,7 +54,6 @@ router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
     console.log(name, email, password);
     //here we have to encypt the password so that it doesn't go in directly
-
     const salt = await bcrypt.genSalt(10);
     const newpassword = await bcrypt.hash(password, salt);
 
@@ -63,9 +62,9 @@ router.post("/signup", async (req, res) => {
     const client = await pool.connect();
     const result = await client.query(
       "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *",
-      [name, email, password]
+      [name, email, newpassword]
     );
-    console.log(result);
+    // console.log(result);
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
