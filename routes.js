@@ -83,7 +83,7 @@ router.post("/signin", async (req, res) => {
     ]);
     console.log(result);
     //if result==null then user doen't exist at all here
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       res.json("No user Exist with this email");
     } else {
       //main work will happen here
