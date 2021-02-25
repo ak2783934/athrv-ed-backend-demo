@@ -22,7 +22,8 @@ app.get("/", async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM users");
-    res.send(JSON.stringify("This worked mfs"));
+    const results = { results: result ? result.rows : null };
+    res.send(JSON.stringify(results));
   } catch (err) {
     console.log(err);
   }
