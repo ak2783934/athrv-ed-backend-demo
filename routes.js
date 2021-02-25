@@ -41,7 +41,7 @@ router.post("/postevent", async (req, res) => {
       [name]
     );
     console.log(result);
-    res.json("result.row[0]");
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
   }
