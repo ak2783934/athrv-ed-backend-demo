@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+var expressJwt = require("express-jwt");
 //postgres connection is here
 const { Pool } = require("pg");
 const pool = new Pool({
@@ -92,7 +94,14 @@ router.post("/signin", async (req, res) => {
         isMatch
       ) {
         if (err) return console.error(err);
-        console.log(isMatch);
+        if (isMatch === "true") {
+          const token = jwt.sign({ _id: user._id }, process.env.secret);
+          res.cookie("tkn", token, { expire: new Date() + 9999 });
+          const { name, email, uid } = result.rows[0];
+          res.json({ token, user: { name, email, uid } });
+        } else {
+          res.json("Email and password didn't match");
+        }
       });
     }
   } catch (err) {
