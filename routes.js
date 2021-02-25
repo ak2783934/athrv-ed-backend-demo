@@ -115,16 +115,13 @@ router.put("/eventedit", async (req, res) => {
   try {
     const { name, isactive, eid } = req.body;
     console.log(name, isactive, eid);
-    // if (isactive === true) {
-    //   isactive = false;
-    // } else {
-    //   isactive = true;
-    // }
-    let active = isactive;
+    var active = isactive;
     if (active === true) {
       active = false;
+      console.log("True wala ");
     } else {
       active = true;
+      console.log("False wala ");
     }
     const client = await pool.connect();
     const result = await client.query(
