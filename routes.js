@@ -47,7 +47,7 @@ router.post("/registration", async (req, res) => {
 
 //try route
 
-app.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM users");
@@ -57,3 +57,5 @@ app.get("/", async (req, res) => {
     console.log(err);
   }
 });
+
+module.exports = router;
