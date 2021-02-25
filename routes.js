@@ -116,7 +116,7 @@ router.put("/eventedit", async (req, res) => {
     const { name, isactive, eid } = req.body;
     console.log(name, isactive, eid);
     var active = isactive;
-    if (active === true) {
+    if (active === "true") {
       active = false;
       console.log("True wala ");
     } else {
