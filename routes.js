@@ -110,7 +110,7 @@ router.post("/signin", async (req, res) => {
 });
 
 //?put routes
-//! only to change the state of the event from active to inactive {auth is required here }
+//! only to change the state of the event from active to inactive {auth is required here and event id is needed }
 router.put("/eventedit", async (req, res) => {
   try {
     const { name, isactive, eid } = req.body;
@@ -137,8 +137,17 @@ router.put("/eventedit", async (req, res) => {
 //list all the routes you are going to work on!!
 //? get routes
 //! 1) getall the events {no auth required} //will be used both inside and outside
+router.get("/events", async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query("SELECT * FROM event");
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
-//! 2) get all the persons list registered at certain event {auth required}
+//! 2) get all the persons list registered at certain event {auth required and eventid}
 
 //try route
 
