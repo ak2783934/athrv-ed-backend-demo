@@ -60,13 +60,13 @@ router.post("/signup", async (req, res) => {
 
     console.log(newpassword);
 
-    // const client = await pool.connect();
-    // const result = await client.query(
-    //   "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *",
-    //   [name, email, password]
-    // );
-    // console.log(result);
-    res.json("result.rows[0]");
+    const client = await pool.connect();
+    const result = await client.query(
+      "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *",
+      [name, email, password]
+    );
+    console.log(result);
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
   }
