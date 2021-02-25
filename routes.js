@@ -115,15 +115,21 @@ router.put("/eventedit", async (req, res) => {
   try {
     const { name, isactive, eid } = req.body;
     console.log(name, isactive, eid);
-    if (isactive === true) {
-      isactive = false;
+    // if (isactive === true) {
+    //   isactive = false;
+    // } else {
+    //   isactive = true;
+    // }
+    let active = isactive;
+    if (active === true) {
+      active = false;
     } else {
-      isactive = true;
+      active = true;
     }
     const client = await pool.connect();
     const result = await client.query(
       "UPDATE event SET isactive =$1 WHERE eid =$2 RETURNING *",
-      [isactive, eid]
+      [active, eid]
     );
     res.json(result.rows[0]);
   } catch (err) {
