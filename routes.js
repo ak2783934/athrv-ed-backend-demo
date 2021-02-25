@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const validator = require("validator");
+const bcrypt = require("bcrypt");
 //postgres connection is here
 const { Pool } = require("pg");
 const pool = new Pool({
@@ -48,6 +49,29 @@ router.post("/postevent", async (req, res) => {
 });
 
 //! signup
+router.post("/signup", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    console.log(name, email, password);
+    //here we have to encypt the password so that it doesn't go in directly
+
+    const salt = await bcrypt.genSalt(10);
+    const newpassword = await bcrypt.hash(password, salt);
+
+    console.log(newpassword);
+
+    // const client = await pool.connect();
+    // const result = await client.query(
+    //   "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *",
+    //   [name, email, password]
+    // );
+    // console.log(result);
+    res.json("result.rows[0]");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 //! signin
 
 //?delete routes
