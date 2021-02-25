@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 // const cors = require("cors");
@@ -16,7 +17,7 @@ const client = pool.connect();
 app.get("/", async (req, res) => {
   try {
     const result = await client.query("SELECT * FROM users");
-    res.send(JSON.stringify(result));
+    res.send(JSON.stringify("NULL"));
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
