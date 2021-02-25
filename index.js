@@ -24,7 +24,7 @@ app.get("/", async (req, res) => {
     // const result = await client.query("SELECT * FROM users");
     // const results = { results: result ? result.rows : null };
     // res.send(JSON.stringify(results));
-    res.send(req.body);
+    res.json(req);
   } catch (err) {
     console.log(err);
   }
