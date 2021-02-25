@@ -13,10 +13,10 @@ const pool = new Pool({
 });
 const client = pool.connect();
 
-app.get("/db", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const result = await client.query("SELECT * FROM test_table");
-    res.json("we are connected ");
+    res.send(JSON.stringify(result));
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
