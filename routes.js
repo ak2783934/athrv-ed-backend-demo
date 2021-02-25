@@ -40,7 +40,8 @@ router.post("/postevent", async (req, res) => {
       "INSERT INTO event (name) VALUES ($1) RETURNING *",
       [name]
     );
-    res.json(result.row[0]);
+    console.log(result);
+    res.json("result.row[0]");
   } catch (err) {
     console.error(err);
   }
