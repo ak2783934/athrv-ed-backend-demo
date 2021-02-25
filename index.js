@@ -20,10 +20,11 @@ const pool = new Pool({
 //running the express app here
 app.get("/", async (req, res) => {
   try {
-    const client = await pool.connect();
-    const result = await client.query("SELECT * FROM users");
-    const results = { results: result ? result.rows : null };
-    res.send(JSON.stringify(results));
+    // const client = await pool.connect();
+    // const result = await client.query("SELECT * FROM users");
+    // const results = { results: result ? result.rows : null };
+    // res.send(JSON.stringify(results));
+    res.send(req.body);
   } catch (err) {
     console.log(err);
   }
