@@ -25,6 +25,6 @@ app.get("/db", async (req, res) => {
   }
 });
 
-app.connect(5000, () => {
+app.connect(process.env.PORT || 3000, () => {
   console.log("app is running at 5000");
 });
