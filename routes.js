@@ -77,15 +77,24 @@ router.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(email, password);
-    const salt = await bcrypt.genSalt(10);
-    const newpassword = await bcrypt.hash(password, salt);
-    console.log(newpassword);
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM users WHERE email=$1", [
       email,
     ]);
     console.log(result);
-    res.json("TRYING SIGNIN");
+    //if result==null then user doen't exist at all here
+    if (result.lenght() === 0) {
+      res.json("No user Exist with this email");
+    } else {
+      //main work will happen here
+      bcrypt.compare(password, result.rows[0].password, function (
+        err,
+        isMatch
+      ) {
+        if (err) return console.error(err);
+        console.log(isMatch);
+      });
+    }
   } catch (err) {
     console.error(err);
   }
