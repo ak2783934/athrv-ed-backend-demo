@@ -4,8 +4,10 @@ const router = express.Router();
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-var expressJwt = require("express-jwt");
+const { isAdmin, isSignedIn } = require("./middleware");
+
 //postgres connection is here
+
 const { Pool } = require("pg");
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -35,8 +37,21 @@ router.post("/registration", async (req, res) => {
 
 //! posting a new event {auth required here}
 //? FIRST WE WILL MAKE IT NOT AUTH REQUIRED
-router.post("/postevent", async (req, res) => {
+router.param("userId", async (req, res, next, id) => {
   try {
+    const client = await pool.connect();
+    const result = await client.query("SELECT * FROM users WHERE uid=$1", [id]);
+    req.profile = result.rows[0];
+    next();
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post("/postevent/:userId", isSignedIn, isAdmin, async (req, res) => {
+  try {
+    const userId = req.params;
+    console.log(userId);
     const { name } = req.body;
     console.log(name);
     const client = await pool.connect();
@@ -51,7 +66,7 @@ router.post("/postevent", async (req, res) => {
   }
 });
 
-//! signup
+//! signup {it is complete}
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -74,7 +89,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-//! signin
+//! signin {it is complete here}
 
 router.post("/signin", async (req, res) => {
   try {
@@ -111,29 +126,40 @@ router.post("/signin", async (req, res) => {
 });
 
 //?put routes
-//! only to change the state of the event from active to inactive {auth is required here and event id is needed }
-router.put("/eventedit", async (req, res) => {
-  try {
-    const { name, isactive, eid } = req.body;
-    console.log(name, isactive, eid);
-    var active = isactive;
-    if (active === "true") {
-      active = false;
-      console.log("True wala ");
-    } else {
-      active = true;
-      console.log("False wala ");
+//! only to change the state of the event from active to inactive {auth is required here and eventno is needed }
+router.put(
+  "/eventedit/:userId/:eventno",
+  isSignedIn,
+  isAdmin,
+  async (req, res) => {
+    try {
+      const client = await pool.connect();
+      const eid = req.params.eventno;
+      //now find the thing from eid here no?
+      const event = await client.query("SELECT * FROM event WHERE eid=$1", [
+        eid,
+      ]);
+      const { name, isactive } = event.rows[0];
+      console.log(name, isactive, eid);
+      var active = isactive;
+      if (active === true) {
+        active = false;
+        console.log("True wala ");
+      } else {
+        active = true;
+        console.log("False wala ");
+      }
+
+      const result = await client.query(
+        "UPDATE event SET isactive =$1 WHERE eid =$2 RETURNING *",
+        [active, eid]
+      );
+      res.json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
     }
-    const client = await pool.connect();
-    const result = await client.query(
-      "UPDATE event SET isactive =$1 WHERE eid =$2 RETURNING *",
-      [active, eid]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
   }
-});
+);
 
 //list all the routes you are going to work on!!
 //? get routes
@@ -149,18 +175,24 @@ router.get("/events", async (req, res) => {
 });
 
 //! 2) get all the persons list registered at certain event {auth required and eventno}
-router.get("/getlist", async (req, res) => {
-  try {
-    const { eventno } = req.body;
-    const client = await pool.connect();
-    const result = await client.query(
-      "SELECT * FROM registrations WHERE eventno=$1",
-      [eventno]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
+router.get(
+  "/getlist/:userId/:eventno",
+  isSignedIn,
+  isAdmin,
+  async (req, res) => {
+    try {
+      const eventno = req.params.eventno;
+      console.log(eventno);
+      const client = await pool.connect();
+      const result = await client.query(
+        "SELECT * FROM registrations WHERE eventno=$1",
+        [eventno]
+      );
+      res.json(result.rows);
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
+);
 
 module.exports = router;
