@@ -147,7 +147,7 @@ router.get("/events", async (req, res) => {
   }
 });
 
-//! 2) get all the persons list registered at certain event {auth required and eventid}
+//! 2) get all the persons list registered at certain event {auth required and eventno}
 router.get("/getlist", async (req, res) => {
   try {
     const { eventno } = req.body;
@@ -159,19 +159,6 @@ router.get("/getlist", async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-  }
-});
-
-//try route
-
-router.get("/", async (req, res) => {
-  try {
-    const client = await pool.connect();
-    const result = await client.query("SELECT * FROM users");
-    const results = { results: result ? result.rows : null };
-    res.send(JSON.stringify(results));
-  } catch (err) {
-    console.log(err);
   }
 });
 
