@@ -4,3 +4,8 @@
 -- third is events 
 
 -- First step is to create a database for us
+heroku
+pg:
+psql
+
+
