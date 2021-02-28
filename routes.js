@@ -51,14 +51,14 @@ router.param("userId", async (req, res, next, id) => {
 router.post("/postevent/:userId", isSignedIn, isAdmin, async (req, res) => {
   try {
     const userId = req.params;
-    console.log(userId);
+    // console.log(userId);
     const { name, date } = req.body;
     const client = await pool.connect();
     const result = await client.query(
       "INSERT INTO event (name,date) VALUES ($1,$2) RETURNING *",
       [name, date]
     );
-    console.log(result.rows[0]);
+    // console.log(result.rows[0]);
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -69,12 +69,12 @@ router.post("/postevent/:userId", isSignedIn, isAdmin, async (req, res) => {
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log(name, email, password);
+    // console.log(name, email, password);
     //here we have to encypt the password so that it doesn't go in directly
     const salt = await bcrypt.genSalt(10);
     const newpassword = await bcrypt.hash(password, salt);
 
-    console.log(newpassword);
+    // console.log(newpassword);
 
     const client = await pool.connect();
     const result = await client.query(
@@ -93,12 +93,12 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
+    // console.log(email, password);
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM users WHERE email=$1", [
       email,
     ]);
-    console.log(result);
+    // console.log(result);
     //if result==null then user doen't exist at all here
     if (result.rows.length === 0) {
       res.json("No user Exist with this email");
@@ -188,7 +188,7 @@ router.get(
   async (req, res) => {
     try {
       const eventno = req.params.eventno;
-      console.log(eventno);
+      // console.log(eventno);
       const client = await pool.connect();
       const result = await client.query(
         "SELECT * FROM registrations WHERE eventno=$1",

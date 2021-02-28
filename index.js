@@ -8,28 +8,22 @@ const routes = require("./routes");
 app.use(cors());
 app.use(express.json());
 
-//postgres connection is here
-// const { Pool } = require("pg");
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: true,
-//   tls: {
-//     rejectUnauthorized: false,
-//   },
-// });
+app.use(function (req, res, next) {
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 //running the express app here
 app.use("/", routes);
-// app.get("/", async (req, res) => {
-//   try {
-//     const client = await pool.connect();
-//     const result = await client.query("SELECT * FROM users");
-//     const results = { results: result ? result.rows : null };
-//     res.send(JSON.stringify(results));
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 
 app.listen(port, () => {
   console.log(`My app is running at ${port}`);
