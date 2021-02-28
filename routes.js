@@ -23,7 +23,7 @@ const pool = new Pool({
 router.post("/registration", async (req, res) => {
   try {
     const { name, age, phone, email, college, eventno } = req.body;
-    console.log(name, age, phone, email, college, eventno);
+    // console.log(name, age, phone, email, college, eventno);
     const client = await pool.connect();
     const result = await client.query(
       "INSERT INTO registrations (name,age,phone,email,college,eventno) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
@@ -142,18 +142,19 @@ router.put(
       const client = await pool.connect();
       const eid = req.params.eventno;
       //now find the thing from eid here no?
+      // console.log("before query");
       const event = await client.query("SELECT * FROM event WHERE eid=$1", [
         eid,
       ]);
       const { name, isactive } = event.rows[0];
-      console.log(name, isactive, eid);
+      // console.log(name, isactive, eid);
       var active = isactive;
       if (active === true) {
         active = false;
-        console.log("True wala ");
+        // console.log("True wala ");
       } else {
         active = true;
-        console.log("False wala ");
+        // console.log("False wala ");
       }
 
       const result = await client.query(
