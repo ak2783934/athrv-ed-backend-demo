@@ -16,6 +16,8 @@
 
 This is the backend part of app deployed in [heroku](https://athrv-ed-demo.herokuapp.com)
 
+** Want to check admin panal log in using email: `admin@gmail.com` password: `adminhai` **
+
 ---
 
 ## Dependencies
