@@ -52,14 +52,13 @@ router.post("/postevent/:userId", isSignedIn, isAdmin, async (req, res) => {
   try {
     const userId = req.params;
     console.log(userId);
-    const { name } = req.body;
-    console.log(name);
+    const { name, date } = req.body;
     const client = await pool.connect();
     const result = await client.query(
-      "INSERT INTO event (name) VALUES ($1) RETURNING *",
-      [name]
+      "INSERT INTO event (name,date) VALUES ($1,$2) RETURNING *",
+      [name, date]
     );
-    console.log(result);
+    console.log(result.rows[0]);
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -123,6 +122,13 @@ router.post("/signin", async (req, res) => {
   } catch (err) {
     console.error(err);
   }
+});
+
+router.get("/signout", (req, res) => {
+  res.clearCookie("tkn");
+  res.json({
+    message: "User signed out!",
+  });
 });
 
 //?put routes

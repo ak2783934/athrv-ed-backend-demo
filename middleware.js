@@ -5,13 +5,6 @@ exports.isSignedIn = expressJwt({
   userProperty: "auth",
 });
 
-exports.signOut = (req, res) => {
-  res.clearCookie("tkn");
-  res.json({
-    message: "User signed out!",
-  });
-};
-
 exports.isAdmin = (req, res, next) => {
   if (!req.profile.isadmin) {
     return res.status(403).json({ error: "you are not admin: ACCESS DENIED" });
